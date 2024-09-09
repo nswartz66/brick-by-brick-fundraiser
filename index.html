@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brick by Brick: Fundraiser for the Temple of DAV South Florida</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: black;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #e6f7ff;
+        }
+
+        h1 {
+            color: #00509e;
+            font-size: 36px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .donation-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+        .fundraiser-meter {
+            width: 50%;
+            text-align: center;
+        }
+
+        .fundraiser-meter #meter {
+            width: 250px;
+            height: 250px;
+            background-color: #d4edda;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .fundraiser-meter #meter .amount {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .tiers {
+            width: 45%;
+        }
+
+        .tiers ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .tiers li {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+        }
+
+        .tiers input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .qr-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .qr-section img {
+            width: 150px;
+            height: 150px;
+        }
+
+        .about {
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with email and donate text -->
+    <header>
+        <h1>Brick by Brick: Fundraiser for the Temple of DAV South Florida</h1>
+        <p style="font-size: 24px; color: blue;">Donate here: tes.davsouthflorida@udv.org.br</p>
+    </header>
+
+    <!-- Container for main page content -->
+    <div class="container">
+        <div class="donation-section">
+            <!-- Fundraiser Meter -->
+            <div class="fundraiser-meter">
+                <div id="meter">
+                    <div class="amount">$0</div>
+                </div>
+            </div>
+
+            <!-- Donation Tiers -->
+            <div class="tiers">
+                <ul>
+                    <li><input type="checkbox" id="tier1"> $1,000.00</li>
+                    <li><input type="checkbox" id="tier2"> $2,500.00</li>
+                    <li><input type="checkbox" id="tier3"> $5,000.00</li>
+                    <li><input type="checkbox" id="tier4"> $10,000.00</li>
+                    <li><input type="checkbox" id="tier5"> $25,000.00</li>
+                    <li><input type="checkbox" id="tier6"> $50,000.00</li>
+                    <li><input type="checkbox" id="tier7"> $100,000.00</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer with logo -->
+    <footer>
+        <img src="DAV_Logo.png" alt="DAV South Florida Logo" width="200">
+    </footer>
+
+    <!-- JavaScript to fetch data from Google Sheets and update meter -->
+    <script>
+        const sheetId = "YOUR_GOOGLE_SHEET_ID";
+        const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A1?key=YOUR_API_KEY`;
+
+        // Function to update donation amount from Google Sheets
+        async function updateDonationAmount() {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            const donationAmount = data.values[0][0];
+            
+            // Update the donation amount in the circular meter
+            document.querySelector('.amount').textContent = donationAmount;
+
+            // Update donation tiers based on the raised amount
+            if (donationAmount >= 1000) document.getElementById('tier1').checked = true;
+            if (donationAmount >= 2500) document.getElementById('tier2').checked = true;
+            if (donationAmount >= 5000) document.getElementById('tier3').checked = true;
+            if (donationAmount >= 10000) document.getElementById('tier4').checked = true;
+            if (donationAmount >= 25000) document.getElementById('tier5').checked = true;
+            if (donationAmount >= 50000) document.getElementById('tier6').checked = true;
+            if (donationAmount >= 100000) document.getElementById('tier7').checked = true;
+        }
+
+        // Call the function to update the meter
+        updateDonationAmount();
+    </script>
+</body>
+</html>
